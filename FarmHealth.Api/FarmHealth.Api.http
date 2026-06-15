@@ -1,0 +1,6 @@
+@FarmHealth.Api_HostAddress = http://localhost:5009
+
+GET {{FarmHealth.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
