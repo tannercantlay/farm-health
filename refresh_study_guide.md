@@ -19,6 +19,17 @@ A condensed reference covering the architecture and key concepts most likely to 
 ### Nullable Reference Types
 - Enabled via `<Nullable>enable</Nullable>` in the project file. The compiler then warns you when a `string` (non-nullable) might actually be null.
 - `string?` = explicitly nullable. `??` = null-coalescing (default value). `?.` = null-conditional access. `!` = null-forgiving operator ("trust me, this isn't null").
+- On model properties specifically, the `?` also controls the database column:
+  - `string Name` → non-nullable column (SQL `NOT NULL`) — field is required
+  - `string? Location` → nullable column (SQL allows `NULL`) — field is optional
+- `required` + no `?` is the strictest combination: the compiler enforces the property is set at construction *and* it can never be null at runtime. Use this for fields every record must have.
+- `{ get; }` alone (no setter) is also effectively non-nullable if set in the constructor — the value can never be changed after init.
+- `required` is only meaningful on **reference types** (`string`, classes, arrays) — they can be null so the compiler needs the hint. **Value types** (`int`, `bool`, `double`, `DateTime`) can never be null and always have a default (e.g. `0` for int), so `required` on them is unnecessary. Pattern in practice:
+  ```csharp
+  public int Id { get; set; }              // int — no required needed
+  public required string Name { get; set; } // string — required enforces it's set
+  public string? Location { get; set; }     // string — optional, so no required
+  ```
 
 ### Records & Pattern Matching
 - `record` types give you immutability + value-based equality for free — great for DTOs.
@@ -35,6 +46,51 @@ A condensed reference covering the architecture and key concepts most likely to 
       _ => "Other"
   };
   ```
+
+### File Structure Convention
+Every C# file follows this order — always:
+```csharp
+using SomeNamespace;        // 1. using statements (imports)
+using AnotherNamespace;
+
+namespace My.Project.Folder; // 2. namespace declaration (where this class "lives")
+
+public class MyClass         // 3. class definition
+{
+    ...
+}
+```
+- `using` statements import external namespaces so you can reference their types by short name.
+- `namespace` declares where your own class lives — this is what other files reference when they write `using My.Project.Folder;`.
+- Usings must come before the namespace declaration or the compiler will reject the file.
+
+### Auto-Properties
+- `{ get; set; }` is shorthand for a readable/writable property. The compiler generates the backing field for you.
+- The long form (rarely written manually) is:
+  ```csharp
+  private string _name;
+  public string Name
+  {
+      get { return _name; }
+      set { _name = value; }
+  }
+  ```
+- The short form collapses that to one line: `public string Name { get; set; }`
+- The semicolons inside the braces terminate each accessor declaration — they're not ending the line, they're ending `get;` and `set;` individually.
+- Common variants: `{ get; }` = read-only (init in constructor only), `{ get; private set; }` = publicly readable, only settable from inside the class.
+
+### Collection Return Types
+Use the least powerful type that satisfies the caller's needs — a design signal about what the caller is allowed to do with the data:
+
+| Type | Can iterate | Access by index | Modify (Add/Remove) |
+|------|-------------|-----------------|---------------------|
+| `IEnumerable<T>` | ✅ | ❌ | ❌ |
+| `IReadOnlyList<T>` | ✅ | ✅ | ❌ |
+| `IList<T>` | ✅ | ✅ | ✅ |
+| `List<T>` | ✅ | ✅ | ✅ |
+
+- Return `IReadOnlyList<T>` from service methods — you're handing the caller data to read, not a collection to mutate.
+- All of these are built into .NET (`System.Collections.Generic`) — no extra `using` needed.
 
 ### Generics & Interfaces
 - Generic constraints: `where T : class`, `where T : IEntity`.
@@ -102,10 +158,12 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connStr));
   {
       public int Id { get; set; }
       public string Name { get; set; }
-      public int FarmId { get; set; }
-      public Farm Farm { get; set; }
+      public int FarmId { get; set; }   // FK — the actual DB column, stores the Farm's Id
+      public Farm Farm { get; set; }    // navigation property — not a DB column, C# convenience to traverse the relationship
   }
   ```
+- **FK vs navigation property:** `FarmId` is what gets stored in the database (a number). `Farm` is what EF populates so you can do `animal.Farm.Name` in code without a second query. Use `FarmId` when saving/filtering, use `Farm` when you need data from the related object (requires `.Include()`).
+- **EF naming convention:** EF automatically recognizes `FarmId` as the FK for the `Farm` navigation property because it follows the `[TypeName]Id` pattern — no annotation needed. If you name it anything else (e.g. `FarmReference`), you'd have to tell EF explicitly via a `[ForeignKey]` attribute or Fluent API.
 - Configure relationships via Fluent API in `OnModelCreating` for anything beyond conventions.
 
 ### Querying
