@@ -1,0 +1,42 @@
+<div class="page">
+  <a class="back-link" routerLink="/animals">← Back to Animals</a>
+
+  @if (animal(); as a) {
+    <div class="page-header">
+      <h2>{{ a.name }}</h2>
+    </div>
+
+    <div class="card detail-meta">
+      <p><span>Species:</span> {{ a.species }}</p>
+      <p><span>Farm:</span> {{ farmName() }}</p>
+    </div>
+
+    <div class="detail-actions">
+      <a class="btn btn-secondary" [routerLink]="['/animals', a.id, 'edit']">Edit</a>
+      <button class="btn btn-danger" (click)="delete()">Delete</button>
+    </div>
+
+    <div class="page-header">
+      <h3>Health Records</h3>
+      <a class="btn btn-primary" [routerLink]="['/animals', a.id, 'healthrecords', 'new']">+ Add Record</a>
+    </div>
+
+    <div class="health-records">
+      @for (record of healthRecords(); track record.id) {
+        <div class="health-record">
+          <span class="status-badge status-{{ record.status }}">{{ record.status }}</span>
+          <div>
+            <div class="record-date">{{ record.recordedAt | date:'mediumDate' }}</div>
+            @if (record.notes) {
+              <div class="record-notes">{{ record.notes }}</div>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">No health records yet.</div>
+      }
+    </div>
+  } @else {
+    <p class="loading">Loading…</p>
+  }
+</div>

@@ -1,0 +1,56 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Animals</h2>
+    <a class="btn btn-primary" routerLink="/animals/new">+ Add Animal</a>
+  </div>
+
+  @if (loading()) {
+    <p class="loading">Loading…</p>
+  } @else {
+    @for (group of farmGroups(); track group.farm.id) {
+      <div class="farm-group">
+        <div class="farm-group-header">
+          <span class="farm-name">{{ group.farm.name }}</span>
+          @if (group.farm.location) {
+            <span class="farm-location">{{ group.farm.location }}</span>
+          }
+        </div>
+
+        <div class="animal-list">
+          @for (animal of group.animals; track animal.id) {
+            <div class="animal-card">
+              <div>
+                <div class="name">{{ animal.name }}</div>
+                <div class="species">{{ animal.species }}</div>
+              </div>
+              <a class="btn btn-secondary" [routerLink]="['/animals', animal.id]">View</a>
+            </div>
+          } @empty {
+            <div class="empty-state">No animals on this farm yet.</div>
+          }
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">No farms yet. Add a farm first, then add animals.</div>
+    }
+
+    @if (unassigned().length > 0) {
+      <div class="farm-group">
+        <div class="farm-group-header">
+          <span class="farm-name">Unassigned</span>
+        </div>
+        <div class="animal-list">
+          @for (animal of unassigned(); track animal.id) {
+            <div class="animal-card">
+              <div>
+                <div class="name">{{ animal.name }}</div>
+                <div class="species">{{ animal.species }}</div>
+              </div>
+              <a class="btn btn-secondary" [routerLink]="['/animals', animal.id]">View</a>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,24 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Farms</h2>
+    <a class="btn btn-primary" routerLink="/farms/new">+ Add Farm</a>
+  </div>
+
+  <div class="animal-list">
+    @for (farm of farms(); track farm.id) {
+      <div class="animal-card">
+        <div>
+          <div class="name">{{ farm.name }}</div>
+          @if (farm.location) {
+            <div class="species">{{ farm.location }}</div>
+          }
+        </div>
+        <div class="row-actions">
+          <a class="btn btn-secondary" [routerLink]="['/farms', farm.id, 'edit']">Edit</a>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">No farms yet. Add one to get started.</div>
+    }
+  </div>
+</div>

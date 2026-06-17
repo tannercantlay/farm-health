@@ -1,0 +1,45 @@
+<div class="page">
+  <a class="back-link" routerLink="/animals">← Back to Animals</a>
+
+  <div class="page-header">
+    <h2>{{ editId ? 'Edit Animal' : 'New Animal' }}</h2>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Name</label>
+        <input formControlName="name" placeholder="Animal name" />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <small>Name is required (max 50 characters).</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Species</label>
+        <input formControlName="species" placeholder="e.g. Cattle, Chicken" />
+        @if (form.controls.species.touched && form.controls.species.invalid) {
+          <small>Species is required.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Farm</label>
+        <select formControlName="farmId">
+          <option [value]="0" disabled>Select a farm…</option>
+          @for (farm of farms(); track farm.id) {
+            <option [value]="farm.id">{{ farm.name }}</option>
+          }
+        </select>
+        @if (form.controls.farmId.touched && form.controls.farmId.value === 0) {
+          <small>Please select a farm.</small>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid || form.controls.farmId.value === 0">Save</button>
+        <a class="btn btn-secondary" routerLink="/animals">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

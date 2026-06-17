@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Sick Animals</h2>
+  </div>
+
+  @if (loading()) {
+    <p class="loading">Loading health records…</p>
+  } @else if (farmGroups().length === 0) {
+    <div class="empty-state all-clear">
+      <div class="all-clear-icon">✓</div>
+      <div class="all-clear-text">All clear — no animals are currently sick.</div>
+    </div>
+  } @else {
+    @for (group of farmGroups(); track group.farm.id) {
+      <div class="farm-group">
+        <div class="farm-group-header">
+          <span class="farm-name">{{ group.farm.name }}</span>
+          @if (group.farm.location) {
+            <span class="farm-location">{{ group.farm.location }}</span>
+          }
+          <span class="sick-count">{{ group.animals.length }} sick</span>
+        </div>
+
+        <div class="animal-list">
+          @for (item of group.animals; track item.animal.id) {
+            <div class="animal-card sick-card">
+              <div>
+                <div class="name">{{ item.animal.name }}</div>
+                <div class="species">{{ item.animal.species }}</div>
+                @if (item.latestRecord.notes) {
+                  <div class="sick-notes">{{ item.latestRecord.notes }}</div>
+                }
+              </div>
+              <a class="btn btn-secondary" [routerLink]="['/animals', item.animal.id]">View</a>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

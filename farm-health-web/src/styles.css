@@ -1,1 +1,230 @@
-/* You can add global styles to this file, and also import other style files */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  background: #1a1a1a;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-brand { font-size: 1rem; font-weight: 700; letter-spacing: 0.02em; }
+
+.navbar-links { display: flex; gap: 0.25rem; }
+
+.navbar-links a {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.navbar-links a:hover { color: white; background: #2a2a2a; }
+.navbar-links a.active { color: white; background: #2563eb; }
+
+.optional { font-weight: 400; color: #9ca3af; font-size: 0.8rem; }
+.row-actions { display: flex; gap: 0.5rem; }
+
+.nav-sick { color: #fca5a5 !important; }
+.nav-sick.active { background: #7f1d1d !important; color: #fca5a5 !important; }
+
+.sick-card { border-left: 3px solid #dc2626 !important; }
+.sick-notes { font-size: 0.8rem; color: #6b7280; margin-top: 2px; font-style: italic; }
+.sick-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.all-clear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem;
+}
+.all-clear-icon {
+  width: 56px;
+  height: 56px;
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.all-clear-text { font-size: 1rem; color: #374151; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 { font-size: 1.5rem; font-weight: 600; }
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary { background: #2563eb; color: white; }
+.btn-primary:hover { background: #1d4ed8; text-decoration: none; }
+.btn-secondary { background: #e5e7eb; color: #374151; }
+.btn-secondary:hover { background: #d1d5db; text-decoration: none; }
+.btn-danger { background: #dc2626; color: white; }
+.btn-danger:hover { background: #b91c1c; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.25rem;
+}
+
+.farm-group { margin-bottom: 2rem; }
+
+.farm-group-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.farm-name { font-size: 1.1rem; font-weight: 700; color: #1a1a1a; }
+.farm-location { font-size: 0.875rem; color: #6b7280; }
+
+.animal-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.animal-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  transition: box-shadow 0.15s;
+}
+
+.animal-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.animal-card .name { font-weight: 600; }
+.animal-card .species { font-size: 0.875rem; color: #6b7280; margin-top: 2px; }
+
+.detail-meta { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.detail-meta p { color: #374151; }
+.detail-meta span { font-weight: 500; }
+
+.detail-actions { display: flex; gap: 0.75rem; margin-bottom: 2rem; }
+
+.health-records { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+
+.health-record {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-Healthy { background: #dcfce7; color: #166534; }
+.status-Sick { background: #fee2e2; color: #991b1b; }
+.status-Recovering { background: #fef9c3; color: #854d0e; }
+
+.record-date { font-size: 0.8rem; color: #6b7280; margin-top: 2px; }
+.record-notes { font-size: 0.875rem; color: #4b5563; margin-top: 2px; }
+
+.form-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 480px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem; }
+.form-group label { font-size: 0.875rem; font-weight: 500; color: #374151; }
+
+.form-group input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-group input:focus { border-color: #2563eb; }
+
+.form-group select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  outline: none;
+  background: white;
+  cursor: pointer;
+}
+
+.form-group select:focus { border-color: #2563eb; }
+.form-group small { color: #dc2626; font-size: 0.75rem; }
+
+.form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+
+.back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.875rem; color: #6b7280; }
+.back-link:hover { color: #1a1a1a; }
+
+.empty-state { text-align: center; padding: 2rem; color: #6b7280; }
+.loading { color: #6b7280; padding: 2rem 0; }

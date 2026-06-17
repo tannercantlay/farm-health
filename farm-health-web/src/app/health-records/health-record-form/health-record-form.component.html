@@ -1,0 +1,33 @@
+<div class="page">
+  <a class="back-link" [routerLink]="['/animals', animalId]">← Back to Animal</a>
+
+  <div class="page-header">
+    <h2>Add Health Record</h2>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Status</label>
+        <select formControlName="status">
+          <option value="Healthy">Healthy</option>
+          <option value="Sick">Sick</option>
+          <option value="Recovering">Recovering</option>
+        </select>
+        @if (form.controls.status.touched && form.controls.status.invalid) {
+          <small>Status is required.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Notes</label>
+        <input formControlName="notes" placeholder="Optional notes…" />
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Save</button>
+        <a class="btn btn-secondary" [routerLink]="['/animals', animalId]">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
